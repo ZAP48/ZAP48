@@ -12,69 +12,43 @@
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
   <style>
-    /* --- TEMA BRAT / NEOMORPHISM CORE --- */
+    /* --- TEMA BRAT CORE --- */
     :root {
-      --primary: #8ACE00; /* Verde Brat */
-      --black: #000000;
-      --white: #ffffff;
-      --bg: #f4f4f4;
-      --border: 2px solid #000;
-      --shadow: 4px 4px 0px #000;
-      --shadow-sm: 2px 2px 0px #000;
+      --primary: #8ACE00; --black: #000000; --white: #ffffff; --bg: #f4f4f4;
+      --border: 2px solid #000; --shadow: 4px 4px 0px #000; --shadow-sm: 2px 2px 0px #000;
       --radius: 16px;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-    
-    body {
-      background-color: var(--bg);
-      color: var(--black);
-      font-family: 'Roboto', sans-serif;
-      padding-bottom: 90px;
-      overflow-x: hidden;
-    }
-
+    body { background-color: var(--bg); color: var(--black); font-family: 'Roboto', sans-serif; padding-bottom: 90px; overflow-x: hidden; }
     h1, h2, h3, h4, .font-head { font-family: 'Montserrat', sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; }
 
-    /* --- LAYOUT --- */
     .header { background: var(--bg); padding: 20px; position: sticky; top: 0; z-index: 100; border-bottom: var(--border); text-align: center; }
     .logo { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1.5rem; color: var(--black); font-style: italic; }
     .logo span { color: var(--primary); }
     .container { padding: 0 20px; max-width: 600px; margin: 0 auto; }
-    
     .view-section { display: none; padding-top: 20px; }
     .view-section.active { display: block; animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* --- HERO --- */
-    .hero { position: relative; height: 320px; border-radius: var(--radius); border: var(--border); box-shadow: var(--shadow); margin-bottom: 30px; overflow: hidden; background: #000; color: #fff; }
-    .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.6; z-index: 1; }
-    .hero-content { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; z-index: 2; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); }
-    .tag { background: var(--primary); color: #000; font-weight: 900; font-size: 0.7rem; padding: 4px 10px; border-radius: 4px; display: inline-block; margin-bottom: 8px; border: 1px solid #000; }
-
-    /* --- CARDS --- */
+    /* CARDS & GRIDS */
     .card { background: #fff; border: var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 15px; margin-bottom: 15px; }
     .section-title { font-size: 1.2rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
     .section-title::before { content: ''; width: 12px; height: 12px; background: var(--primary); border: 2px solid #000; }
-
-    /* GRID DISCOGRAFIA MENOR */
-    .grid-2 { 
-        display: grid; 
-        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); 
-        gap: 12px; 
-        align-items: start; 
-    }
-    
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; align-items: start; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    
     .item-card { text-align: center; cursor: pointer; transition: transform 0.1s; display: flex; flex-direction: column; gap: 6px; }
     .item-card:active { transform: scale(0.95); }
     .item-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border: var(--border); border-radius: 12px; background: #fff; display: block; }
-    
-    #disco-grid .item-name { font-size: 0.7rem; } 
     .item-name { font-weight: 900; font-size: 0.8rem; line-height: 1.2; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 
-    /* --- INPUTS & BUTTONS --- */
+    /* HERO BANNER (DINÂMICO) */
+    .hero { position: relative; height: 320px; border-radius: var(--radius); border: var(--border); box-shadow: var(--shadow); margin-bottom: 30px; overflow: hidden; background: #000; color: #fff; cursor: pointer; transition: transform 0.2s;}
+    .hero:active { transform: scale(0.98); }
+    .hero-media { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.6; z-index: 1; pointer-events: none; }
+    .hero-content { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; z-index: 2; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); pointer-events: none; }
+    .tag { background: var(--primary); color: #000; font-weight: 900; font-size: 0.7rem; padding: 4px 10px; border-radius: 4px; display: inline-block; margin-bottom: 8px; border: 1px solid #000; }
+
     .scroll-filters { display: flex; gap: 8px; overflow-x: auto; padding: 5px 0 15px 0; }
     .btn-pill { white-space: nowrap; padding: 8px 16px; border: var(--border); border-radius: 50px; background: #fff; font-weight: 700; font-size: 0.8rem; cursor: pointer; box-shadow: 2px 2px 0 #000; }
     .btn-pill.active { background: var(--primary); }
@@ -83,7 +57,7 @@
     .btn-main { background: var(--primary); color: #000; border: var(--border); padding: 14px; border-radius: var(--radius); font-weight: 900; width: 100%; cursor: pointer; box-shadow: var(--shadow-sm); text-transform: uppercase; margin-top: 10px; }
     input, select { width: 100%; padding: 12px; border: var(--border); border-radius: 8px; font-family: inherit; font-weight: 700; margin-top: 5px; background: #fff; }
 
-    /* --- MODAIS (Base) --- */
+    /* MODAIS VISUALIZACAO */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; display: none; justify-content: center; align-items: flex-end; }
     .modal-overlay.active { display: flex; animation: fadeModal 0.2s forwards; }
     @keyframes fadeModal { from{opacity:0;} to{opacity:1;} }
@@ -97,24 +71,16 @@
     .tab-pane, .modal-section { display: none; padding: 20px; }
     .tab-pane.active, .modal-section.active { display: block; }
 
-    /* --- COMPONENTS ESPECÍFICOS --- */
-
-    /* 1. Músicas/Participações (Estilo Brat) */
     .part-card { background: #fff; border: var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; box-shadow: var(--shadow-sm); }
     .part-header { background: #fff; padding: 12px 15px; font-weight: 900; font-size: 0.8rem; text-transform: uppercase; border-bottom: var(--border); display: flex; justify-content: space-between; align-items: center; }
     .part-header::after { content: ''; width: 10px; height: 10px; background: var(--primary); border: 2px solid #000; display: block; }
     .part-row { padding: 12px 15px; border-bottom: 1px dashed #ccc; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 600; }
-    .part-row:last-child { border-bottom: none; }
     .label-brat { display: inline-flex; align-items: center; gap: 5px; font-size: 0.6rem; padding: 4px 8px; border-radius: 20px; font-weight: 900; text-transform: uppercase; border: 2px solid #000; margin-left: 5px; box-shadow: 2px 2px 0 #000; white-space: nowrap; }
-    .label-brat.is-aside { background: var(--primary); color: #000; }
-    .label-brat.is-bside { background: #000; color: var(--primary); }
-    .label-brat.is-center { background: #fff; color: #000; border-color: #000; }
-    .label-brat.is-unit { background: #eee; color: #555; }
+    .label-brat.is-aside { background: var(--primary); color: #000; } .label-brat.is-bside { background: #000; color: var(--primary); }
+    .label-brat.is-center { background: #fff; color: #000; border-color: #000; } .label-brat.is-unit { background: #eee; color: #555; }
 
-    /* 2. Discografia (Accordion & Tracklist) */
     .formation-group { background: #fff; border: var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
     .formation-header { padding: 15px; background: #fff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
-    .formation-header:active { background: #eee; }
     .formation-title { font-size: 0.85rem !important; font-weight: 800 !important; display: flex; align-items: center; gap: 10px; margin: 0 !important; text-transform: uppercase; }
     .formation-arrow { transition: transform 0.3s ease; }
     .formation-group.open .formation-arrow { transform: rotate(180deg); }
@@ -123,53 +89,26 @@
     .formation-idol-icon { width: 26px; height: 26px; border-radius: 50%; background: var(--black); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; border: 1px solid var(--primary); }
     
     .member-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 10px; }
-    .member-card-static { text-align: center; }
-    .member-card-static img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #ccc; object-fit: cover; background: #fff; }
-    .member-card-static.is-center img { border-color: var(--primary); box-shadow: 0 0 0 2px #000; }
+    .member-card-static { text-align: center; position: relative; }
+    .member-card-static img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #ccc; object-fit: cover; background: #fff; transition: 0.2s; }
+    .member-card-static.is-center img { border-color: var(--primary); box-shadow: 0 0 0 3px #000; transform: scale(1.05); }
     .member-info h3 { font-size: 0.65rem; font-weight: 900; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
     .tracklist { list-style: none; padding: 0; margin: 0; }
     .tracklist li { padding: 14px 0; border-bottom: 1px dashed #ccc; font-size: 0.9rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
-    .tracklist li:last-child { border-bottom: none; }
 
-    /* 3. STAGES (Novo) - Visual Brat */
-    .stage-card {
-        background: #fff; border: var(--border); border-radius: var(--radius); padding: 15px; margin-bottom: 15px; display: flex; gap: 15px; align-items: center; box-shadow: var(--shadow);
-    }
+    .stage-card { background: #fff; border: var(--border); border-radius: var(--radius); padding: 15px; margin-bottom: 15px; display: flex; gap: 15px; align-items: center; box-shadow: var(--shadow); }
     .stage-cover { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #000; object-fit: cover; }
     .stage-info { flex: 1; }
     .stage-title { font-weight: 900; font-size: 1rem; text-transform: uppercase; line-height: 1.1; }
     .stage-sub { font-size: 0.7rem; font-weight: 700; color: #666; margin-top: 4px; }
     .stage-badge { font-size: 0.6rem; padding: 2px 6px; background: var(--black); color: var(--primary); border-radius: 4px; font-weight: 900; display: inline-block; margin-top: 6px; }
 
-    /* Setlist Styles (Brat Edition) */
     .setlist-wrap { padding: 10px 0; font-family: 'Roboto', sans-serif; }
     .sl-row { padding: 8px 0; border-bottom: 1px dashed #ddd; font-size: 0.85rem; font-weight: 600; display: flex; align-items: flex-start; gap: 8px; }
-    
-    /* Música: Fundo Verde, Texto Preto, Borda Preta */
-    .sl-music { 
-        background: var(--primary); 
-        color: #000; 
-        font-weight: 900; 
-        padding: 2px 6px; 
-        border: 1px solid #000; 
-        box-shadow: 2px 2px 0 #000;
-        display: inline-block;
-    }
-    
-    /* MC: Fundo Preto, Texto Branco */
-    .sl-mc { 
-        background: #000; 
-        color: #fff; 
-        padding: 2px 6px; 
-        border-radius: 4px; 
-        font-size: 0.7rem; 
-        font-weight: 900; 
-    }
-    
+    .sl-music { background: var(--primary); color: #000; font-weight: 900; padding: 2px 6px; border: 1px solid #000; box-shadow: 2px 2px 0 #000; display: inline-block; }
+    .sl-mc { background: #000; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 900; }
     .sl-header { margin-top: 20px; font-weight: 900; font-size: 1rem; text-transform: uppercase; border-bottom: 3px solid var(--primary); display: inline-block; }
 
-    /* 4. Senbatsu Maker */
     .sen-canvas { background: #fff; border: var(--border); padding: 20px; text-align: center; border-radius: var(--radius); margin-bottom: 20px; }
     .sen-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
     .sen-slot { width: 60px; text-align: center; cursor: pointer; position: relative; }
@@ -178,20 +117,6 @@
     .sen-badge { position: absolute; bottom: 18px; right: 2px; background: #000; color: #fff; font-size: 0.6rem; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; z-index: 2; }
     .sen-name-label { font-weight: 900; font-size: 0.8rem; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* --- CORREÇÃO MOBILE --- */
-    @media (max-width: 600px) {
-      .sen-canvas { padding: 10px 2px; }
-      .sen-row { gap: 3px; margin-bottom: 12px; }
-      .sen-slot { width: 50px; }
-      .sen-circle { width: 44px; height: 44px; border-width: 2px; }
-      .sen-badge { width: 14px; height: 14px; font-size: 0.55rem; bottom: 14px; right: 0px; }
-      .sen-name-label { font-size: 0.55rem; margin-top: 2px; letter-spacing: -0.5px; overflow: hidden; }
-      .is-center .sen-circle { transform: scale(1.08); box-shadow: 0 0 0 1px #000; }
-      .stage-card { gap: 10px; padding: 12px; }
-      .stage-cover { width: 60px; height: 60px; }
-    }
-
-    /* --- NAV --- */
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: #000; display: flex; border-top: 4px solid var(--primary); z-index: 1000; }
     .nav-item { flex: 1; background: none; border: none; color: #666; font-size: 0.6rem; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; cursor: pointer; transition: 0.2s; }
     .nav-item.active { color: var(--primary); }
@@ -200,14 +125,13 @@
 </head>
 
 <body>
-
   <div class="header"><div class="logo">ZAP<span>48</span></div></div>
 
   <div id="view-home" class="view-section active container">
-    <div class="hero">
-      <img id="hero-bg" class="hero-bg" src="" onerror="this.style.display='none'">
+    <div class="hero" id="hero-container">
+      <div id="hero-media-wrapper"></div>
       <div class="hero-content">
-        <span class="tag">ÚLTIMO LANÇAMENTO</span>
+        <span class="tag" id="hero-tag">DESTAQUE</span>
         <h1 id="hero-title" class="font-head" style="font-size: 1.5rem; line-height: 1.1;">Carregando...</h1>
         <p id="hero-sub" style="font-size: 0.8rem; font-weight: 700; opacity: 0.9;">...</p>
       </div>
@@ -233,9 +157,7 @@
 
   <div id="view-stages" class="view-section container">
     <h3 class="section-title">Stages</h3>
-    <div id="stages-list">
-        <div style="text-align:center; padding:20px; color:#999;">Carregando stages...</div>
-    </div>
+    <div id="stages-list"></div>
   </div>
 
   <div id="view-senbatsu" class="view-section container">
@@ -249,8 +171,7 @@
         <div>
           <label class="font-head" style="font-size:0.6rem;">Fileiras</label>
           <select id="s-rowcount" onchange="senRenderRowInputs()">
-            <option value="1">1</option><option value="2">2</option><option value="3" selected>3</option>
-            <option value="4">4</option>
+            <option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option>
           </select>
         </div>
         <div>
@@ -270,10 +191,7 @@
       <img id="m-cover" style="width:120px; height:120px; border-radius:50%; border:4px solid var(--primary); object-fit:cover; margin:-60px auto 10px; display:block; background:#000;" src="">
       <h2 id="m-name" style="text-align:center;"></h2>
       <p id="m-team" style="text-align:center; font-weight:900; font-size:0.7rem; color:#666; margin-bottom:15px; text-transform: uppercase;"></p>
-      <div class="tabs">
-        <button class="tab-btn active" onclick="switchTabModal('perfil', this)">Perfil</button>
-        <button class="tab-btn" onclick="switchTabModal('part', this)">Músicas</button>
-      </div>
+      <div class="tabs"><button class="tab-btn active" onclick="switchTabModal('perfil', this)">Perfil</button><button class="tab-btn" onclick="switchTabModal('part', this)">Músicas</button></div>
       <div id="tab-perfil" class="tab-pane active"><p id="m-bio" style="font-size:0.9rem; line-height:1.6; color:#333; white-space: pre-wrap;"></p></div>
       <div id="tab-part" class="tab-pane"><div id="m-part"></div></div>
     </div>
@@ -299,8 +217,7 @@
         <h2 id="sm-title" class="font-head" style="margin-top:15px; font-size:1.2rem;"></h2>
         <p id="sm-sub" style="color:var(--primary); font-weight:900; text-transform:uppercase; font-size:0.7rem; -webkit-text-stroke: 0.5px black;"></p>
       </div>
-      <div id="sm-content" style="padding: 0;">
-          </div>
+      <div id="sm-content" style="padding: 0;"></div>
     </div>
   </div>
 
@@ -309,14 +226,10 @@
       <button class="close-btn" onclick="closeModal('sen-modal')">×</button>
       <div style="padding:20px;">
         <div id="sen-print" class="sen-canvas">
-          <div id="sen-print-single" class="tag">SINGLE</div>
-          <h2 id="sen-print-song" class="font-head">Música</h2>
+          <div id="sen-print-single" class="tag">SINGLE</div><h2 id="sen-print-song" class="font-head">Música</h2>
           <div id="sen-rows" style="display:flex; flex-direction:column-reverse; gap:15px; margin-top:20px;"></div>
         </div>
-        <div style="display:flex; gap:10px; margin-top:20px;">
-            <button class="btn-main" onclick="senClear()" style="background:#fff; color:#000;">Limpar</button>
-            <button class="btn-main" onclick="senPrint()">Salvar Imagem</button>
-        </div>
+        <div style="display:flex; gap:10px; margin-top:20px;"><button class="btn-main" onclick="senClear()" style="background:#fff; color:#000;">Limpar</button><button class="btn-main" onclick="senPrint()">Salvar Imagem</button></div>
       </div>
     </div>
   </div>
@@ -340,522 +253,91 @@
   </div>
 
   <script>
-    // --- CONFIG SUPABASE ---
     const SUPABASE_URL = "https://iooyygtaosshxygnhlco.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlvb3l5Z3Rhb3NzaHh5Z25obGNvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkwMDEyNTUsImV4cCI6MjA4NDU3NzI1NX0.gfcVtNgn3g1gnFVrtaIqzkWxajYiV_KbtycYsE9OZ0Y";
     const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Nomes de tabelas
-    const T_STAGES = "Stages";
-    const T_STAGECASTS = "Stagecasts";
+    let loadedMembers = [], loadedDiscos = [], loadedStages = [], loadedNews = [], loadedBanner = null;
+    let currentFilter = "gen", senSlots = [], currentSlotIdx = -1, currentSenRows = [];
 
-    // --- ESTADO GLOBAL ---
-    let loadedMembers = [];
-    let loadedDiscos = [];
-    let loadedStages = [];
-    let currentFilter = "gen";
-    let senSlots = [];
-    let currentSlotIdx = -1;
-    let currentSenRows = [];
-
-    // --- INICIALIZAÇÃO ---
     async function init() {
       try {
-        const { data: news } = await _sb.from('Noticias').select('*').order('Data', { ascending: false }).limit(5);
+        const { data: news } = await _sb.from('Noticias').select('*').order('Data', { ascending: false });
         const { data: discos } = await _sb.from('Discografia').select('*');
         const { data: members } = await _sb.from('Membros').select('*').order('Nome', { ascending: true });
+        try { const { data: banners } = await _sb.from('Banners').select('*').limit(1); if(banners && banners.length > 0) loadedBanner = banners[0]; } catch(e) {}
         
-        loadedMembers = members || [];
-        loadedDiscos = (discos || []).sort((a,b) => (b.id || 0) - (a.id || 0));
-        
-        // Carrega Stages
-        loadStages();
-
-        renderNews(news || []);
-        renderDisco(loadedDiscos);
-        renderMembers();
-        senRenderRowInputs();
-      } catch (e) {
-        console.error("Erro ao carregar dados:", e);
-      }
+        loadedMembers = members || []; loadedDiscos = (discos || []).sort((a,b) => (b.id || 0) - (a.id || 0)); loadedNews = news || [];
+        loadStages(); renderDynamicHero(); renderNews(loadedNews); renderDisco(loadedDiscos); renderMembers(); senRenderRowInputs();
+      } catch (e) { console.error(e); }
     }
 
-    async function loadStages() {
-        const { data } = await _sb.from(T_STAGES).select('*').order('id', {ascending: false});
-        loadedStages = data || [];
-        renderStagesList();
+    async function loadStages() { const { data } = await _sb.from("Stages").select('*').order('id', {ascending: false}); loadedStages = data || []; renderStagesList(); }
+    function switchView(id, el) { document.querySelectorAll(".view-section").forEach(v => v.classList.remove("active")); document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active")); document.getElementById(id).classList.add("active"); el.classList.add("active"); window.scrollTo(0,0); }
+
+    function renderDynamicHero() {
+        const wrapper = document.getElementById("hero-media-wrapper"), container = document.getElementById("hero-container");
+        let b = loadedBanner; if(!b && loadedDiscos.length > 0) b = { tipo: 'imagem', url_midia: loadedDiscos[0].Capa, titulo: loadedDiscos[0].Titulo, subtitulo: 'ÚLTIMO LANÇAMENTO', link_destino: '' };
+        if(!b) return;
+        document.getElementById("hero-title").innerText = b.titulo || ''; document.getElementById("hero-sub").innerText = b.subtitulo || '';
+        if(b.tipo === 'video' || (b.url_midia && b.url_midia.toLowerCase().endsWith('.mp4'))) { wrapper.innerHTML = `<video class="hero-media" src="${b.url_midia}" autoplay loop muted playsinline></video>`; } 
+        else { wrapper.innerHTML = `<img class="hero-media" src="${b.url_midia}" onerror="this.style.display='none'">`; }
+        container.onclick = () => { if(b.link_destino) window.open(b.link_destino, '_blank'); };
     }
 
-    // --- NAVEGAÇÃO ---
-    function switchView(id, el) {
-      document.querySelectorAll(".view-section").forEach(v => v.classList.remove("active"));
-      document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
-      document.getElementById(id).classList.add("active");
-      el.classList.add("active");
-      window.scrollTo(0,0);
-    }
-
-    // --- RENDERIZADORES ---
-    function renderNews(list) {
-      document.getElementById("news-list").innerHTML = list.map(n => {
-        const d = n.Data.split("-");
-        return `
-          <div class="card" style="display:flex; align-items:center; gap:15px;">
-            <div style="text-align:center; min-width:50px; border-right:2px solid #eee; padding-right:15px;">
-              <b style="font-size:1.5rem; color:var(--primary); -webkit-text-stroke:1px #000;">${d[2]}</b>
-              <span style="font-size:0.7rem; font-weight:900;">${d[1]}/${d[0]}</span>
-            </div>
-            <div>
-              <span class="tag" style="font-size:0.5rem; padding:2px 5px;">${n.Categoria}</span>
-              <h4 style="font-size:0.9rem;">${n.Titulo}</h4>
-            </div>
-          </div>`;
-      }).join('');
-    }
-
-    /* --- DISCOGRAFIA --- */
-    function renderDisco(list) {
-      if(list.length > 0) {
-        document.getElementById("hero-title").innerText = list[0].Titulo;
-        document.getElementById("hero-sub").innerText = `${list[0].Tipo} • Center: ${list[0].Center || 'N/A'}`;
-        document.getElementById("hero-bg").src = resolveImage(list[0].Capa);
-      }
-      document.getElementById("disco-grid").innerHTML = list.map((d, idx) => `<div class="item-card" onclick="openDiscoModal(${idx})"><img src="${resolveImage(d.Capa)}"><div class="item-name">${d.Titulo}</div></div>`).join('');
-    }
+    function renderNews(list) { document.getElementById("news-list").innerHTML = list.slice(0,10).map(n => { const d = n.Data.split("-"); return `<div class="card" style="display:flex; align-items:center; gap:15px;"><div style="text-align:center; min-width:50px; border-right:2px solid #eee; padding-right:15px;"><b style="font-size:1.5rem; color:var(--primary); -webkit-text-stroke:1px #000;">${d[2]}</b><br><span style="font-size:0.7rem; font-weight:900;">${d[1]}/${d[0]}</span></div><div><span class="tag" style="font-size:0.5rem; padding:2px 5px;">${n.Categoria}</span><h4 style="font-size:0.9rem;">${n.Titulo}</h4></div></div>`; }).join(''); }
+    function renderDisco(list) { document.getElementById("disco-grid").innerHTML = list.map((d, idx) => `<div class="item-card" onclick="openDiscoModal(${idx})"><img src="${resolveImage(d.Capa)}"><div class="item-name">${d.Titulo}</div></div>`).join(''); }
 
     function openDiscoModal(idx) {
-      const d = loadedDiscos[idx];
-      document.getElementById("dm-cover").src = resolveImage(d.Capa);
-      document.getElementById("dm-title").innerText = d.Titulo;
-      document.getElementById("dm-sub").innerText = d.Tipo;
-      
-      const box = document.getElementById("dm-content");
-      box.innerHTML = "";
-
-      const temp = document.createElement("div");
-      temp.innerHTML = d.Tracklist || "";
-      const jsonEl = temp.querySelector("#ctl48-formation-data");
-      let formationJSON = null;
-
-      if (jsonEl) {
-        try { formationJSON = JSON.parse(jsonEl.textContent.trim()); } catch(e){}
-      }
-
-      if (Array.isArray(formationJSON)) {
-        box.innerHTML = `
-          <div class="tabs">
-            <button class="tab-btn active" data-target="t">Tracklist</button>
-            <button class="tab-btn" data-target="f">Formação</button>
-          </div>
-          <div id="pane-t" class="modal-section active" style="padding: 0 20px 40px;">${renderTracklistFromJSON(formationJSON)}</div>
-          <div id="pane-f" class="modal-section" style="padding: 0 20px 40px;">${renderFormationFromJSON(formationJSON)}</div>
-        `;
-        initTabsAndAccordion(box);
-      } else {
-        temp.querySelectorAll(".modal-nav, .tabs, .tab-btn").forEach(e => e.remove());
-        const tracklistEl = temp.querySelector(".tracklist");
-        const tHTML = tracklistEl ? tracklistEl.outerHTML : "<p style='text-align:center;padding:20px;color:#999'>Sem tracklist.</p>";
-        if(tracklistEl) tracklistEl.remove();
-        const fHTML = temp.innerHTML.trim() || "<p style='text-align:center;padding:20px;color:#999'>Sem formação.</p>";
-        
-        box.innerHTML = `
-          <div class="tabs">
-            <button class="tab-btn active" data-target="t">Tracklist</button>
-            <button class="tab-btn" data-target="f">Formação</button>
-          </div>
-          <div id="pane-t" class="modal-section active" style="padding: 0 20px 40px;">${tHTML}</div>
-          <div id="pane-f" class="modal-section" style="padding: 0 20px 40px;">${fHTML}</div>
-        `;
-        initTabsAndAccordion(box);
-      }
-      document.getElementById("disco-modal").classList.add("active");
+      const d = loadedDiscos[idx]; document.getElementById("dm-cover").src = resolveImage(d.Capa); document.getElementById("dm-title").innerText = d.Titulo; document.getElementById("dm-sub").innerText = d.Tipo;
+      const box = document.getElementById("dm-content"); box.innerHTML = ""; const temp = document.createElement("div"); temp.innerHTML = d.Tracklist || ""; const jsonEl = temp.querySelector("#ctl48-formation-data"); let fJSON = null; if (jsonEl) { try { fJSON = JSON.parse(jsonEl.textContent.trim()); } catch(e){} }
+      if (Array.isArray(fJSON)) { box.innerHTML = `<div class="tabs"><button class="tab-btn active" data-target="t">Tracklist</button><button class="tab-btn" data-target="f">Formação</button></div><div id="pane-t" class="modal-section active" style="padding: 0 20px 40px;">${renderTracklistFromJSON(fJSON)}</div><div id="pane-f" class="modal-section" style="padding: 0 20px 40px;">${renderFormationFromJSON(fJSON)}</div>`; } 
+      else { temp.querySelectorAll(".modal-nav, .tabs, .tab-btn").forEach(e => e.remove()); const tracklistEl = temp.querySelector(".tracklist"); const tHTML = tracklistEl ? tracklistEl.outerHTML : "<p style='text-align:center;padding:20px;color:#999'>Sem tracklist.</p>"; if(tracklistEl) tracklistEl.remove(); const fHTML = temp.innerHTML.trim() || "<p style='text-align:center;padding:20px;color:#999'>Sem formação.</p>"; box.innerHTML = `<div class="tabs"><button class="tab-btn active" data-target="t">Tracklist</button><button class="tab-btn" data-target="f">Formação</button></div><div id="pane-t" class="modal-section active" style="padding: 0 20px 40px;">${tHTML}</div><div id="pane-f" class="modal-section" style="padding: 0 20px 40px;">${fHTML}</div>`; }
+      initTabsAndAccordion(box); document.getElementById("disco-modal").classList.add("active");
     }
 
     function initTabsAndAccordion(box) {
-      box.querySelectorAll(".tab-btn").forEach(btn => {
-        btn.onclick = () => {
-          box.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-          box.querySelectorAll(".modal-section").forEach(s => s.classList.remove("active"));
-          btn.classList.add("active");
-          box.querySelector(`#pane-${btn.dataset.target}`).classList.add("active");
-        };
-      });
-      box.querySelectorAll(".formation-group").forEach(group => {
-        let header = group.querySelector(".formation-header");
-        if(!header) {
-           const title = group.querySelector(".formation-title");
-           if(title) {
-             const txt = title.innerText;
-             header = document.createElement("div"); header.className="formation-header";
-             header.innerHTML = `<div class="formation-title"><span class="formation-idol-icon"><i class="fas ${pickIcon(txt)}"></i></span>${txt}</div><i class="fas fa-chevron-down formation-arrow"></i>`;
-             group.insertBefore(header, group.firstChild);
-             title.remove();
-           }
-        }
-        if(header) header.onclick = () => group.classList.toggle("open");
-      });
+      box.querySelectorAll(".tab-btn").forEach(btn => { btn.onclick = () => { box.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active")); box.querySelectorAll(".modal-section").forEach(s => s.classList.remove("active")); btn.classList.add("active"); box.querySelector(`#pane-${btn.dataset.target}`).classList.add("active"); }; });
+      box.querySelectorAll(".formation-group").forEach(group => { let header = group.querySelector(".formation-header"); if(!header) { const title = group.querySelector(".formation-title"); if(title) { const txt = title.innerText; header = document.createElement("div"); header.className="formation-header"; header.innerHTML = `<div class="formation-title"><span class="formation-idol-icon"><i class="fas fa-music"></i></span>${txt}</div><i class="fas fa-chevron-down formation-arrow"></i>`; group.insertBefore(header, group.firstChild); title.remove(); } } if(header) header.onclick = () => group.classList.toggle("open"); });
     }
 
-    function renderTracklistFromJSON(list) {
-        if(!list || !list.length) return "<p>Vazio.</p>";
-        return `<ul class="tracklist">${list.map(item => {
-            let cls='is-bside'; let ico='fa-compact-disc';
-            const k = (item.kind||"").toLowerCase();
-            if(k.includes('a-side')||k.includes('aside')) { cls='is-aside'; icon='fa-star'; }
-            else if(k.includes('unit')) { cls='is-unit'; ico='fa-users'; }
-            return `<li><span>${item.name}</span><span class="label-brat ${cls}"><i class="fas ${ico}"></i> ${item.kind}</span></li>`;
-        }).join('')}</ul>`;
-    }
-
-    function renderFormationFromJSON(list) {
-        if(!list || !list.length) return "<p>Vazio.</p>";
-        return list.map(g => `
-            <div class="formation-group">
-                <div class="formation-header">
-                    <div class="formation-title"><span class="formation-idol-icon"><i class="fas ${pickIcon(g.kind||g.name)}"></i></span>${g.name}</div>
-                    <i class="fas fa-chevron-down formation-arrow"></i>
-                </div>
-                <div class="formation-content">
-                    <div class="member-grid">
-                        ${(g.members||[]).map(m => {
-                            const real = loadedMembers.find(x => x.Nome === m.name);
-                            const url = real ? resolveImage(real.Foto) : `https://placehold.co/80x80/eee/333?text=${m.name.charAt(0)}`;
-                            return `<div class="member-card-static ${m.isCenter?'is-center':''}"><img src="${url}"><div class="member-info"><h3>${m.name}</h3></div></div>`;
-                        }).join('')}
-                    </div>
-                </div>
-            </div>`).join('');
-    }
-
-    function pickIcon(t) {
-      t = t.toLowerCase();
-      if(t.includes('a-side') || t.includes('aside')) return 'fa-star';
-      if(t.includes('b-side') || t.includes('bside')) return 'fa-compact-disc';
-      if(t.includes('unit')) return 'fa-users';
-      if(t.includes('solo')) return 'fa-microphone';
-      if(t.includes('senbatsu')) return 'fa-crown';
-      return 'fa-music';
-    }
-
-    /* --- LÓGICA DE STAGES (CORRIGIDA E BLINDADA) --- */
-    function renderStagesList() {
-        const div = document.getElementById('stages-list');
-        if(!loadedStages.length) {
-            div.innerHTML = '<div style="text-align:center; padding:20px; color:#999;">Nenhum stage encontrado.</div>';
-            return;
-        }
-        div.innerHTML = loadedStages.map(s => `
-            <div class="stage-card" onclick="openStageModal(${s.id})">
-                <img src="${resolveImage(s.Capa)}" class="stage-cover">
-                <div class="stage-info">
-                    <div class="stage-title">${s.Titulo}</div>
-                    <div class="stage-sub">${s.Subtitulo || ''}</div>
-                    <span class="stage-badge">${s.Status || 'Em Cartaz'}</span>
-                </div>
-            </div>
-        `).join('');
-    }
+    function renderTracklistFromJSON(list) { if(!list || !list.length) return "<p>Vazio.</p>"; return `<ul class="tracklist">${list.map(item => { let cls='is-bside'; const k = (item.kind||"").toLowerCase(); if(k.includes('a-side')||k.includes('aside')) cls='is-aside'; else if(k.includes('unit')) cls='is-unit'; return `<li><span>${item.name}</span><span class="label-brat ${cls}">${item.kind}</span></li>`; }).join('')}</ul>`; }
+    function renderFormationFromJSON(list) { if(!list || !list.length) return "<p>Vazio.</p>"; return list.map(g => `<div class="formation-group"><div class="formation-header"><div class="formation-title"><span class="formation-idol-icon"><i class="fas fa-music"></i></span>${g.name}</div><i class="fas fa-chevron-down formation-arrow"></i></div><div class="formation-content"><div class="member-grid">${(g.members||[]).map(m => { const real = loadedMembers.find(x => x.Nome === m.name); const url = real ? resolveImage(real.Foto) : `https://placehold.co/80x80/eee/333?text=${m.name.charAt(0)}`; return `<div class="member-card-static ${m.isCenter?'is-center':''}"><img src="${url}"><div class="member-info"><h3>${m.name}</h3></div></div>`; }).join('')}</div></div></div>`).join(''); }
+    function renderStagesList() { const div = document.getElementById('stages-list'); if(!loadedStages.length) { div.innerHTML = '<div style="text-align:center; padding:20px; color:#999;">Nenhum stage.</div>'; return; } div.innerHTML = loadedStages.map(s => `<div class="stage-card" onclick="openStageModal(${s.id})"><img src="${resolveImage(s.Capa)}" class="stage-cover"><div class="stage-info"><div class="stage-title">${s.Titulo}</div><div class="stage-sub">${s.Subtitulo || ''}</div><span class="stage-badge">${s.Status || 'Em Cartaz'}</span></div></div>`).join(''); }
 
     async function openStageModal(stageId) {
-        const stage = loadedStages.find(s => s.id == stageId);
-        if(!stage) return;
-
-        document.getElementById("sm-title").innerText = stage.Titulo;
-        document.getElementById("sm-sub").innerText = stage.Subtitulo || '';
-        document.getElementById("sm-cover").src = resolveImage(stage.Capa);
-
-        // Render Tabs (Estrutura inicial)
-        const content = document.getElementById("sm-content");
-        content.innerHTML = `
-            <div class="tabs">
-                <button class="tab-btn active" data-target="s-setlist">Setlist</button>
-                <button class="tab-btn" data-target="s-cast">Elenco</button>
-            </div>
-            <div id="pane-s-setlist" class="modal-section active" style="padding:20px;">
-                ${renderSetlist(stage.Setlist)}
-            </div>
-            <div id="pane-s-cast" class="modal-section" style="padding:20px;">
-                <div style="text-align:center; color:#999;">Carregando elenco...</div>
-            </div>
-        `;
-        
+        const stage = loadedStages.find(s => s.id == stageId); if(!stage) return;
+        document.getElementById("sm-title").innerText = stage.Titulo; document.getElementById("sm-sub").innerText = stage.Subtitulo || ''; document.getElementById("sm-cover").src = resolveImage(stage.Capa);
+        const content = document.getElementById("sm-content"); content.innerHTML = `<div class="tabs"><button class="tab-btn active" data-target="s-setlist">Setlist</button><button class="tab-btn" data-target="s-cast">Elenco</button></div><div id="pane-s-setlist" class="modal-section active" style="padding:20px;">${renderSetlist(stage.Setlist)}</div><div id="pane-s-cast" class="modal-section" style="padding:20px;"><div style="text-align:center; color:#999;">Carregando elenco...</div></div>`;
         document.getElementById("stage-modal").classList.add("active");
-
-        // Fetch Cast (Com tratamento de erro)
-        try {
-            const { data: casts, error } = await _sb.from(T_STAGECASTS).select('*').eq('stage_id', stageId);
-            
-            if(error) { throw error; }
-            
-            renderStageCasts(casts || []);
-        } catch(e) {
-            console.error(e);
-            document.getElementById('pane-s-cast').innerHTML = '<div style="text-align:center; color:red; padding:20px;">Erro ao carregar elenco.</div>';
-        }
-        
-        // Ativa tabs e accordion DEPOIS que tudo renderizou
-        initTabsAndAccordion(content); 
+        try { const { data: casts, error } = await _sb.from("Stagecasts").select('*').eq('stage_id', stageId); if(!error) renderStageCasts(casts || []); } catch(e) {} initTabsAndAccordion(content); 
     }
 
-    function renderSetlist(text) {
-        if(!text) return '<p style="color:#999; text-align:center;">Setlist indisponível.</p>';
-        return '<div class="setlist-wrap">' + text.split('\n').map(line => {
-            const l = line.trim();
-            if(!l) return '';
-            if(l.match(/^M\d+/)) return `<div class="sl-row"><span class="sl-music">${l}</span></div>`;
-            if(l.match(/^MC\d+/)) return `<div class="sl-row"><span class="sl-mc">${l}</span></div>`;
-            if(l.toLowerCase().includes('encore')) return `<div class="sl-header">${l}</div>`;
-            return `<div class="sl-row">${l}</div>`;
-        }).join('') + '</div>';
-    }
+    function renderSetlist(text) { if(!text) return '<p style="color:#999; text-align:center;">Setlist indisponível.</p>'; return '<div class="setlist-wrap">' + text.split('\n').map(line => { const l = line.trim(); if(!l) return ''; if(l.match(/^M\d+/)) return `<div class="sl-row"><span class="sl-music">${l}</span></div>`; if(l.match(/^MC\d+/)) return `<div class="sl-row"><span class="sl-mc">${l}</span></div>`; if(l.toLowerCase().includes('encore')) return `<div class="sl-header">${l}</div>`; return `<div class="sl-row">${l}</div>`; }).join('') + '</div>'; }
+    function renderStageCasts(casts) { const div = document.getElementById('pane-s-cast'); if(!casts.length) { div.innerHTML = '<p style="color:#999; text-align:center;">Nenhum elenco.</p>'; return; } div.innerHTML = casts.map(cast => { let members = cast.Membros; try { if (typeof members === 'string') { members = JSON.parse(members); if (typeof members === 'string') members = JSON.parse(members); } } catch (e) { members = []; } if (!Array.isArray(members)) members = [members]; const grid = members.map(m => { const real = loadedMembers.find(x => x.Nome === m.name); const photo = real ? resolveImage(real.Foto) : `https://placehold.co/80`; return `<div class="member-card-static"><img src="${photo}" style="width:50px; height:50px; border-radius:50%; object-fit:cover; border:2px solid #ccc;"><div class="member-info"><h3 style="font-size:0.6rem;">${m.name}</h3></div></div>`; }).join(''); return `<div class="formation-group open"><div class="formation-header" style="background:#000; color:#fff;"><div class="formation-title" style="font-size:0.8rem;">${cast.Nome}</div></div><div class="formation-content" style="padding:15px; display:block;"><div class="member-grid" style="grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));">${grid}</div></div></div>`; }).join(''); }
 
-    function renderStageCasts(casts) {
-        const div = document.getElementById('pane-s-cast');
-        if(!casts.length) {
-            div.innerHTML = '<p style="color:#999; text-align:center;">Nenhum elenco cadastrado.</p>';
-            return;
-        }
-        
-        // --- AQUI ESTAVA O PROBLEMA: BLINDAGEM DE DADOS ---
-        div.innerHTML = casts.map(cast => {
-            let members = cast.Membros;
-            
-            // 1. Tenta fazer parse se for string (pode estar stringificado 2x)
-            try {
-                if (typeof members === 'string') {
-                    members = JSON.parse(members);
-                    // Se ainda for string após o primeiro parse, tenta de novo
-                    if (typeof members === 'string') {
-                        members = JSON.parse(members);
-                    }
-                }
-            } catch (e) {
-                console.warn("Erro ao ler membros do stage:", cast.Nome, e);
-                members = [];
-            }
-
-            // 2. Garante que é array
-            if (!members) members = [];
-            if (!Array.isArray(members)) members = [members];
-
-            // 3. Renderiza o grid de membros
-            const grid = members.map(m => {
-                const real = loadedMembers.find(x => x.Nome === m.name);
-                const photo = real ? resolveImage(real.Foto) : `https://placehold.co/80x80/eee/333?text=${(m.name||"?").charAt(0)}`;
-                return `
-                    <div class="member-card-static">
-                        <img src="${photo}" style="width:50px; height:50px; border-radius:50%; object-fit:cover; border:2px solid #ccc;">
-                        <div class="member-info"><h3 style="font-size:0.6rem;">${m.name}</h3></div>
-                    </div>
-                `;
-            }).join('');
-            
-            return `
-                <div class="formation-group open">
-                    <div class="formation-header" style="background:#000; color:#fff;">
-                        <div class="formation-title" style="font-size:0.8rem;">${cast.Nome}</div>
-                    </div>
-                    <div class="formation-content" style="padding:15px; display:block;">
-                        <div class="member-grid" style="grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));">
-                            ${grid}
-                        </div>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    }
-
-    /* --- LÓGICA DE MEMBROS --- */
-    function setMemberFilter(t, btn) {
-      currentFilter = t;
-      document.querySelectorAll(".btn-filter").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      renderMembers();
-    }
-
-    function renderMembers() {
-      const container = document.getElementById("members-container");
-      const scroll = document.getElementById("scroll-buttons");
-      container.innerHTML = ""; scroll.innerHTML = "";
-      const groups = {};
-      loadedMembers.forEach(m => {
-        if(['graduada','demitida'].includes(m.Status?.toLowerCase())) return;
-        const key = currentFilter === 'team' ? (m.Time || "Outros") : (m.Geracao || "Outros");
-        if(!groups[key]) groups[key] = [];
-        groups[key].push(m);
-      });
-      Object.keys(groups).sort().forEach((key, idx) => {
-        const id = `g-${idx}`;
-        scroll.innerHTML += `<button class="btn-pill" onclick="document.getElementById('${id}').scrollIntoView({behavior:'smooth', block:'center'})">${key}</button>`;
-        container.innerHTML += `<div id="${id}"><h4 class="section-title" style="margin-top:20px;">${key}</h4><div class="grid-3">${groups[key].map(m => `<div class="item-card" onclick='openMemberModal(${JSON.stringify(m).replace(/'/g, "&apos;")})'><img src="${resolveImage(m.Foto)}"><div class="item-name">${m.Nome}</div></div>`).join('')}</div></div>`;
-      });
-    }
+    function setMemberFilter(t, btn) { currentFilter = t; document.querySelectorAll(".btn-filter").forEach(b => b.classList.remove("active")); btn.classList.add("active"); renderMembers(); }
+    function renderMembers() { const container = document.getElementById("members-container"); const scroll = document.getElementById("scroll-buttons"); container.innerHTML = ""; scroll.innerHTML = ""; const groups = {}; loadedMembers.forEach(m => { if(['graduada','demitida'].includes(m.Status?.toLowerCase())) return; const key = currentFilter === 'team' ? (m.Time || "Outros") : (m.Geracao || "Outros"); if(!groups[key]) groups[key] = []; groups[key].push(m); }); Object.keys(groups).sort().forEach((key, idx) => { const id = `g-${idx}`; scroll.innerHTML += `<button class="btn-pill" onclick="document.getElementById('${id}').scrollIntoView({behavior:'smooth', block:'center'})">${key}</button>`; container.innerHTML += `<div id="${id}"><h4 class="section-title" style="margin-top:20px;">${key}</h4><div class="grid-3">${groups[key].map(m => `<div class="item-card" onclick='openMemberModal(${JSON.stringify(m).replace(/'/g, "&apos;")})'><img src="${resolveImage(m.Foto)}"><div class="item-name">${m.Nome}</div></div>`).join('')}</div></div>`; }); }
 
     function openMemberModal(m) {
-      document.getElementById("m-name").innerText = m.Nome;
-      document.getElementById("m-team").innerText = `${m.Time} • ${m.Geracao}`;
-      document.getElementById("m-cover").src = resolveImage(m.Foto);
-      document.getElementById("m-bio").innerText = m.Perfil || "Sem bio.";
-      
-      // Parse Inicial
-      let parts = typeof m.Participacoes === "string" ? JSON.parse(m.Participacoes || "[]") : m.Participacoes;
-      if (!Array.isArray(parts)) parts = [];
-
-      // Mapa para Ordenação
-      const discoMap = {};
-      loadedDiscos.forEach(d => { discoMap[d.Titulo] = d.id || 0; });
-
-      // Ordenação Segura (funciona com string ou objeto)
-      parts.sort((a, b) => {
-        const titleA = typeof a === 'string' ? a.split(':')[0] : (a.single || '');
-        const titleB = typeof b === 'string' ? b.split(':')[0] : (b.single || '');
-        const idA = discoMap[titleA] || 99999;
-        const idB = discoMap[titleB] || 99999;
-        return idA - idB; 
-      });
-      
-      const partsHTML = parts.map(p => {
-        // === CORREÇÃO CRÍTICA AQUI ===
-        // Se for string (formato antigo), retorna simples
-        if (typeof p === 'string') {
-            return `<div class="part-card"><div class="part-row" style="font-weight:700;">${p}</div></div>`;
-        }
-
-        // Se for objeto (formato novo), processa com segurança
-        const rawTracks = p.tracks || []; 
-        const tracks = Array.isArray(rawTracks) ? rawTracks : [rawTracks];
-
-        const rows = tracks.map(t => {
-          if (!t) return ""; // Pula faixas vazias
-
-          const labels = t.labels || [];
-          const badges = Array.isArray(labels) ? labels.map(l => {
-            const slug = String(l).toLowerCase();
-            let cls = ''; let icon = 'fa-tag';
-            if(slug.includes('a-side') || slug==='aside') { cls='is-aside'; icon='fa-star'; }
-            else if(slug.includes('b-side') || slug==='bside') { cls='is-bside'; icon='fa-compact-disc'; }
-            else if(slug.includes('center')) { cls='is-center'; icon='fa-crown'; }
-            else if(slug.includes('unit')) { cls='is-unit'; icon='fa-users'; }
-            return `<span class="label-brat ${cls}"><i class="fas ${icon}"></i> ${l}</span>`;
-          }).join('') : '';
-          
-          return `<div class="part-row"><span>${t.title || 'Música'}</span><div>${badges}</div></div>`;
-        }).join('');
-        
-        return `<div class="part-card"><div class="part-header">${p.single || 'Single'}</div>${rows}</div>`;
-      }).join('');
-
-      document.getElementById("m-part").innerHTML = partsHTML || '<p style="text-align:center; color:#999; padding:20px;">Nenhuma música registrada.</p>';
-      
-      switchTabModal('perfil', document.querySelector('#member-modal .tab-btn')); 
-      document.getElementById("member-modal").classList.add("active");
+      document.getElementById("m-name").innerText = m.Nome; document.getElementById("m-team").innerText = `${m.Time} • ${m.Geracao}`; document.getElementById("m-cover").src = resolveImage(m.Foto); document.getElementById("m-bio").innerText = m.Perfil || "Sem bio.";
+      let parts = typeof m.Participacoes === "string" ? JSON.parse(m.Participacoes || "[]") : m.Participacoes; if (!Array.isArray(parts)) parts = []; const discoMap = {}; loadedDiscos.forEach(d => { discoMap[d.Titulo] = d.id || 0; }); parts.sort((a, b) => { const titleA = typeof a === 'string' ? a.split(':')[0] : (a.single || ''); const titleB = typeof b === 'string' ? b.split(':')[0] : (b.single || ''); return (discoMap[titleA] || 99999) - (discoMap[titleB] || 99999); });
+      const partsHTML = parts.map(p => { if (typeof p === 'string') return `<div class="part-card"><div class="part-row" style="font-weight:700;">${p}</div></div>`; const rawTracks = p.tracks || []; const tracks = Array.isArray(rawTracks) ? rawTracks : [rawTracks]; const rows = tracks.map(t => { if (!t) return ""; const labels = t.labels || []; const badges = Array.isArray(labels) ? labels.map(l => { const slug = String(l).toLowerCase(); let cls = ''; let icon = 'fa-tag'; if(slug.includes('a-side') || slug==='aside') { cls='is-aside'; icon='fa-star'; } else if(slug.includes('b-side') || slug==='bside') { cls='is-bside'; icon='fa-compact-disc'; } else if(slug.includes('center')) { cls='is-center'; icon='fa-crown'; } else if(slug.includes('unit')) { cls='is-unit'; icon='fa-users'; } return `<span class="label-brat ${cls}"><i class="fas ${icon}"></i> ${l}</span>`; }).join('') : ''; return `<div class="part-row"><span>${t.title || 'Música'}</span><div>${badges}</div></div>`; }).join(''); return `<div class="part-card"><div class="part-header">${p.single || 'Single'}</div>${rows}</div>`; }).join('');
+      document.getElementById("m-part").innerHTML = partsHTML || '<p style="text-align:center; color:#999; padding:20px;">Nenhuma música registrada.</p>'; switchTabModal('perfil', document.querySelector('#member-modal .tab-btn')); document.getElementById("member-modal").classList.add("active");
     }
 
-    function renderCharts() {
-      const q = document.getElementById("ch-q").value.toLowerCase();
-      const list = loadedMembers.map(m => {
-        const p = typeof m.Participacoes === "string" ? JSON.parse(m.Participacoes || "[]") : m.Participacoes;
-        return { n: m.Nome, f: m.Foto, t: m.Time, s: p?.length || 0 };
-      }).filter(x => x.n.toLowerCase().includes(q)).sort((a,b) => b.s - a.s);
-      document.getElementById("charts-list").innerHTML = list.map((s, i) => `<div class="card" style="display:flex; align-items:center; gap:15px; padding:10px;"><b style="width:20px;">${i+1}</b><img src="${resolveImage(s.f)}" style="width:40px; height:40px; border-radius:50%; border:1px solid #000;"><div style="flex:1;"><div class="item-name">${s.n}</div><small>${s.t}</small></div><div style="font-weight:900;">${s.s} <small>Músicas</small></div></div>`).join('');
-    }
+    function senRenderRowInputs() { const rc = document.getElementById("s-rowcount").value; const box = document.getElementById("s-row-inputs"); box.innerHTML = ""; const lbls = ["Frente", "Meio", "Fundo", "Fundo 2"]; for(let i=0; i<rc; i++) box.innerHTML += `<div style="margin-bottom:8px;"><b>${lbls[i]||'Fila'}:</b> <input type="number" id="s-row-val-${i}" value="${i==0?6:5}"></div>`; }
+    function senStart() { const rc = document.getElementById("s-rowcount").value; currentSenRows = []; let total = 0; for(let i=0; i<rc; i++) { let v = parseInt(document.getElementById(`s-row-val-${i}`).value); currentSenRows.push(v); total += v; } senSlots = Array(total).fill(null); document.getElementById("sen-print-single").innerText = document.getElementById("s-single").value || "SINGLE"; document.getElementById("sen-print-song").innerText = document.getElementById("s-song").value || "MÚSICA"; document.getElementById("sen-modal").classList.add("active"); renderSenCanvas(); }
+    function renderSenCanvas() { const box = document.getElementById("sen-rows"); box.innerHTML = ""; let globalIdx = 0; const numCenters = parseInt(document.getElementById("s-centers").value) || 1; currentSenRows.forEach(size => { const rowDiv = document.createElement("div"); rowDiv.className = "sen-row"; let indices = []; for(let k=0; k<size; k++) indices.push(globalIdx + k); let left = []; let right = []; for(let k=1; k<size; k++) { if(k % 2 !== 0) left.push(indices[k]); else right.push(indices[k]); } let visual = [...left.reverse(), indices[0], ...right]; visual.forEach(idx => { const m = senSlots[idx]; const isCenter = (idx + 1) <= numCenters; rowDiv.innerHTML += `<div class="sen-slot ${isCenter?'is-center':''}" onclick="openSenPicker(${idx})"><div class="sen-badge">${idx+1}</div><div class="sen-circle">${m?`<img src="${resolveImage(m.Foto)}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-plus" style="color:#ccc"></i>'}</div><div class="sen-name-label">${m?m.Nome:'Vazio'}</div></div>`; }); box.appendChild(rowDiv); globalIdx += size; }); }
+    function openSenPicker(idx) { currentSlotIdx = idx; document.getElementById("sen-pick").classList.add("active"); senRenderPicker(); }
+    function senRenderPicker() { const q = document.getElementById("sen-filter-q").value.toLowerCase(); document.getElementById("sen-pick-grid").innerHTML = loadedMembers.filter(m => m.Nome.toLowerCase().includes(q) && !['graduada','demitida'].includes(m.Status?.toLowerCase())).map(m => `<div class="item-card" onclick='selectMember(${JSON.stringify({Nome:m.Nome, Foto:m.Foto})})'><img src="${resolveImage(m.Foto)}"><div class="item-name">${m.Nome}</div></div>`).join(''); }
+    function selectMember(m) { senSlots[currentSlotIdx] = m; document.getElementById("sen-pick").classList.remove("active"); renderSenCanvas(); }
+    function senClear() { if(confirm("Limpar tudo?")) { senSlots.fill(null); renderSenCanvas(); } }
+    async function senPrint() { const canvas = await html2canvas(document.getElementById("sen-print"), { useCORS: true, backgroundColor: "#ffffff" }); const link = document.createElement('a'); link.download = 'senbatsu.png'; link.href = canvas.toDataURL(); link.click(); }
 
-    /* --- LÓGICA DE SENBATSU (CORRIGIDO: CENTRO VISUAL + PERSISTÊNCIA) --- */
-    function senRenderRowInputs() {
-      const rc = document.getElementById("s-rowcount").value;
-      const box = document.getElementById("s-row-inputs");
-      box.innerHTML = "";
-      const lbls = ["Frente", "Meio", "Fundo", "Fundo 2"];
-      for(let i=0; i<rc; i++) box.innerHTML += `<div style="margin-bottom:8px;"><b>${lbls[i]||'Fila'}:</b> <input type="number" id="s-row-val-${i}" value="${i==0?6:5}"></div>`;
-    }
-
-    function senStart() {
-      const rc = document.getElementById("s-rowcount").value;
-      currentSenRows = []; let total = 0;
-      for(let i=0; i<rc; i++) {
-        let v = parseInt(document.getElementById(`s-row-val-${i}`).value);
-        currentSenRows.push(v); total += v;
-      }
-      senSlots = Array(total).fill(null);
-      document.getElementById("sen-print-single").innerText = document.getElementById("s-single").value || "SINGLE";
-      document.getElementById("sen-print-song").innerText = document.getElementById("s-song").value || "MÚSICA";
-      document.getElementById("sen-modal").classList.add("active");
-      renderSenCanvas();
-    }
-
-    function renderSenCanvas() {
-      const box = document.getElementById("sen-rows"); box.innerHTML = "";
-      let globalIdx = 0;
-      const numCenters = parseInt(document.getElementById("s-centers").value) || 1;
-      
-      currentSenRows.forEach(size => {
-        const rowDiv = document.createElement("div"); rowDiv.className = "sen-row";
-        
-        let indices = []; for(let k=0; k<size; k++) indices.push(globalIdx + k);
-        let left = []; let right = [];
-        for(let k=1; k<size; k++) { 
-          if(k % 2 !== 0) left.push(indices[k]); 
-          else right.push(indices[k]); 
-        }
-        let visual = [...left.reverse(), indices[0], ...right];
-        
-        visual.forEach(idx => {
-          const m = senSlots[idx];
-          const isCenter = (idx + 1) <= numCenters;
-          rowDiv.innerHTML += `
-            <div class="sen-slot ${isCenter?'is-center':''}" onclick="openSenPicker(${idx})">
-              <div class="sen-badge">${idx+1}</div>
-              <div class="sen-circle">${m?`<img src="${resolveImage(m.Foto)}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-plus" style="color:#ccc"></i>'}</div>
-              <div class="sen-name-label">${m?m.Nome:'Vazio'}</div>
-            </div>`;
-        });
-        box.appendChild(rowDiv);
-        globalIdx += size;
-      });
-    }
-
-    function openSenPicker(idx) {
-      currentSlotIdx = idx; document.getElementById("sen-pick").classList.add("active"); senRenderPicker();
-    }
-
-    function senRenderPicker() {
-      const q = document.getElementById("sen-filter-q").value.toLowerCase();
-      document.getElementById("sen-pick-grid").innerHTML = loadedMembers.filter(m => m.Nome.toLowerCase().includes(q) && !['graduada','demitida'].includes(m.Status?.toLowerCase())).map(m => `<div class="item-card" onclick='selectMember(${JSON.stringify({Nome:m.Nome, Foto:m.Foto})})'><img src="${resolveImage(m.Foto)}"><div class="item-name">${m.Nome}</div></div>`).join('');
-    }
-
-    function selectMember(m) {
-      senSlots[currentSlotIdx] = m;
-      document.getElementById("sen-pick").classList.remove("active");
-      renderSenCanvas(); 
-    }
-    
-    function senClear() {
-        if(confirm("Limpar tudo?")) {
-            senSlots.fill(null);
-            renderSenCanvas();
-        }
-    }
-
-    function resolveImage(f) {
-      if(!f) return "https://placehold.co/300?text=?";
-      return (typeof f === "string" ? f : f.publicUrl).replace(/[\[\]"]/g, "");
-    }
-
-    function switchTabModal(t, el) {
-      const p = el.parentElement;
-      p.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-      el.classList.add("active");
-      const content = p.nextElementSibling.parentElement; 
-      content.querySelectorAll(".tab-pane").forEach(tp => tp.classList.remove("active"));
-      content.querySelector("#tab-"+t).classList.add("active");
-    }
-
+    function resolveImage(f) { if(!f) return "https://placehold.co/300?text=?"; return (typeof f === "string" ? f : f.publicUrl).replace(/[\[\]"]/g, ""); }
+    function switchTabModal(t, el) { const p = el.parentElement; p.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active")); el.classList.add("active"); const content = p.nextElementSibling.parentElement; content.querySelectorAll(".tab-pane").forEach(tp => tp.classList.remove("active")); content.querySelector("#tab-"+t).classList.add("active"); }
     function closeModal(id) { document.getElementById(id).classList.remove("active"); }
-
-    async function senPrint() {
-      const canvas = await html2canvas(document.getElementById("sen-print"), { useCORS: true, backgroundColor: "#ffffff" });
-      const link = document.createElement('a'); link.download = 'senbatsu.png'; link.href = canvas.toDataURL(); link.click();
-    }
 
     init();
   </script>
